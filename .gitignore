@@ -1,0 +1,5 @@
+.idea
+logs
+poetry.lock
+data
+__pycache__/

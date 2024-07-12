@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "spotifychartsvis"
+version = "0.1.0"
+description = ""
+authors = ["Franzi <92818644+franziskavonalbedyll@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.2.2"
+plotly = "^5.22.0"
+setuptools = "^70.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
