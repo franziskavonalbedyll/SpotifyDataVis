@@ -11,7 +11,9 @@ if __name__ == '__main__':
     year_right = 2020
     years = [year_left, year_right]
     for year in years:
+        print(f"Preprocessing data for year {year}...")
         preprocess_data(year)
+        print(f"Data preprocessing for year {year} complete.")
 
     audio_feature = 'liveness'
 
@@ -21,5 +23,8 @@ if __name__ == '__main__':
     df_year_right = pd.read_csv(year_to_filepath(year_right))
     df_year_right = df_year_right[['region', 'date'] + [audio_feature]]
 
+    print("Creating visualization...")
     fig = plot(df_year_left, df_year_right, audio_feature)
+    print("Visualization created.")
+
     fig.show()

@@ -161,7 +161,7 @@ if __name__ == '__main__':
 
     df_left = pd.DataFrame.from_dict(data_2019)
     df_right = pd.DataFrame.from_dict(data_2020)
-    audio_feature = 'Valence'
+    audio_feature = 'valence'
 
     fig = plot(df_left, df_right, audio_feature)
     fig.show()
