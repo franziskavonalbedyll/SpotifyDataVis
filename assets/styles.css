@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'Circular Black';
+    src: url('/assets/Circular-Black.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Circular Black';
+}
+
+.dash-dropdown, .dash-graph, .dash-slider, .dash-core-components, .dash-table {
+    font-family: 'Circular Black';
+}
+
+.Select, .Select div, .Select input, .Select option {
+    font-family: 'Circular Black';
+    font-size: 16px;  /* Hier die Schriftgröße anpassen */
+}
+
+.dash-dropdown .Select-control {
+    font-size: 16px;  /* Schriftgröße des ausgewählten Dropdown-Werts */
+}
+
+.dash-dropdown .Select-menu-outer {
+    font-size: 16px;  /* Schriftgröße der Dropdown-Optionen */
+}
+
+.centered-title {
+    text-align: center;
+    font-family: 'Circular Black';
+    font-size: 24px;
+    margin-bottom: 20px;
+}

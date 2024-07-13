@@ -5,7 +5,6 @@ import pandas as pd
 
 from src.config import AUDIO_FEATURES
 
-
 df = pd.read_csv('data/preprocessed_data/preprocessed_data.csv')[['date', 'region', 'year'] + AUDIO_FEATURES]
 years = df['year'].unique()
 dates = df['date'].unique()
@@ -20,6 +19,7 @@ slider_marks = {i * len(dates) // 12: month for i, month in enumerate(month_labe
 # Dash App initialisieren
 app = dash.Dash(__name__)
 app.layout = html.Div(style={'height': '100vh', 'width': '100vw'}, children=[
+    html.Div(className="centered-title", children="Audio Feature Analysis Over Time"),
     html.Div([
         dcc.Dropdown(
             id='year-dropdown-1',
@@ -28,7 +28,7 @@ app.layout = html.Div(style={'height': '100vh', 'width': '100vw'}, children=[
         ),
         dcc.Dropdown(
             id='audio-feature-dropdown-1',
-            options=[{'label': feature, 'value': feature} for feature in AUDIO_FEATURES],
+            options=[{'label': feature.capitalize(), 'value': feature} for feature in AUDIO_FEATURES],
             value='valence'  # Standardwert auf valence gesetzt
         ),
         dcc.Graph(id='choropleth-map-1', style={'height': '70vh'})
@@ -42,7 +42,7 @@ app.layout = html.Div(style={'height': '100vh', 'width': '100vw'}, children=[
         ),
         dcc.Dropdown(
             id='audio-feature-dropdown-2',
-            options=[{'label': feature, 'value': feature} for feature in AUDIO_FEATURES],
+            options=[{'label': feature.capitalize(), 'value': feature} for feature in AUDIO_FEATURES],
             value='valence'  # Standardwert auf valence gesetzt
         ),
         dcc.Graph(id='choropleth-map-2', style={'height': '70vh'})
@@ -82,6 +82,7 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
                          color_continuous_scale=px.colors.sequential.Viridis,
                          range_color=(0, 1),
                          hover_data={'date': True, selected_audio_feature_1: True})
+    fig1.update_layout(title_x=0.5, title_y=0.77)
 
     fig2 = px.choropleth(filtered_df_2, locations="region",
                          locationmode='country names', color=selected_audio_feature_2,
@@ -89,8 +90,10 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
                          color_continuous_scale=px.colors.sequential.Viridis,
                          range_color=(0, 1),
                          hover_data={'date': True, selected_audio_feature_2: True})
+    fig2.update_layout(title_x=0.5, title_y=0.77)
 
-    fig1.update_layout(coloraxis_showscale=False)
+    fig1.update_layout(coloraxis_showscale=False, title_font=dict(family="Circular Black", size=16))
+    fig2.update_layout(title_font=dict(family="Circular Black", size=16), coloraxis_colorbar_title_text = '')
 
     return fig1, fig2
 
