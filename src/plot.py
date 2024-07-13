@@ -62,12 +62,12 @@ def create_play_pause_buttons():
         'buttons': [
             {
                 'args': [None, {'frame': {'duration': 500, 'redraw': True}, 'fromcurrent': True}],
-                'label': 'Play',
+                'label': '▶',
                 'method': 'animate'
             },
             {
                 'args': [[None], {'frame': {'duration': 0, 'redraw': True}, 'mode': 'immediate', 'transition': {'duration': 0}}],
-                'label': 'Pause',
+                'label': '⏸',
                 'method': 'animate'
             }
         ],
