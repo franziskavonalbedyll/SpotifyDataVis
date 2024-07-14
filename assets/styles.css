@@ -7,6 +7,9 @@
 
 body {
     font-family: 'Circular Black';
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .dash-dropdown, .dash-graph, .dash-slider, .dash-core-components, .dash-table {
@@ -31,4 +34,37 @@ body {
     font-family: 'Circular Black';
     font-size: 24px;
     margin-bottom: 20px;
+}
+
+/* Responsive Layout */
+@media (max-width: 1200px) {
+    .half-width {
+        width: 100% !important;
+        display: block;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .centered-title {
+        font-size: 20px;
+    }
+
+    .Select, .Select div, .Select input, .Select option {
+        font-size: 14px;
+    }
+
+    .dash-dropdown .Select-control {
+        font-size: 14px;
+    }
+
+    .dash-dropdown .Select-menu-outer {
+        font-size: 14px;
+    }
+}
+
+/* Fixed width for heatmaps */
+.fixed-heatmap {
+    width: 400px !important; /* Set a fixed width */
+    margin: 0 auto; /* Center the heatmap */
 }
