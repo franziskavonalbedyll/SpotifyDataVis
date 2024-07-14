@@ -57,6 +57,21 @@ def create_slider(dates):
         } for date in dates]
     }
 
+def create_annotations(df, pos: tuple):
+    
+    annotations = []
+    for i, date in enumerate(df_norm_color['date']):
+        tick_color = df_norm_color.loc[df_norm_color['date'] == date, 'color'].values[0]
+        annotations.append(dict(
+            x=i/(len(df_norm_color['date'])-1), y=-0.1, 
+            xref='paper', yref='paper', 
+            showarrow=False, 
+            font=dict(color=tick_color),
+            xshift=50,
+            bgcolor=tick_color,
+            text='.'
+        ))
+
 def create_play_pause_buttons():
     return {
         'buttons': [
