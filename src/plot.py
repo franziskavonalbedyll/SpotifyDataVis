@@ -57,20 +57,42 @@ def create_slider(dates):
         } for date in dates]
     }
 
-def create_annotations(df, pos: tuple):
+def pick_color(color_scale, val):
+    idx = int(val * len(color_scale))
+    return color_scale[idx]
+
+def aggregate_audio_feature(df, audio_feature, color_scale):
+    df_norm = df.copy()
+
+    df_norm[audio_feature] = (df_norm[audio_feature] - df_norm[audio_feature].min()) / (df_norm[audio_feature].max() - df_norm[audio_feature].min())
+
+    df_global = df_norm.groupby('date')[audio_feature].mean().reset_index()
+
+    df_global['color'] = df.apply(lambda x: pick_color(color_scale, x[audio_feature]), axis=1)
+    
+    return df_global
+
+
+def create_annotation(df, audio_feature, color_scale, position):
+    
+    df_global_audio_feature = aggregate_audio_feature(df, audio_feature, color_scale)
     
     annotations = []
-    for i, date in enumerate(df_norm_color['date']):
-        tick_color = df_norm_color.loc[df_norm_color['date'] == date, 'color'].values[0]
+    for i, date in enumerate(df_global_audio_feature['date']):
+        tick_color = df_global_audio_feature.loc[df_global_audio_feature['date'] == date, 'color'].values[0]
         annotations.append(dict(
-            x=i/(len(df_norm_color['date'])-1), y=-0.1, 
-            xref='paper', yref='paper', 
+            x=(i/(len(df_global_audio_feature['date']))) * 0.89, y=position, 
+            xref='paper', yref='paper',
+            xanchor='left', yanchor='bottom', 
             showarrow=False, 
             font=dict(color=tick_color),
-            xshift=50,
+            xshift=180,
             bgcolor=tick_color,
-            text='.'
+            text='.',
+            height=10, width=1,
+            opacity=0.8
         ))
+    return annotations
 
 def create_play_pause_buttons():
     return {
@@ -92,7 +114,7 @@ def create_play_pause_buttons():
         'type': 'buttons',
         'x': 0.1,
         'xanchor': 'right',
-        'y': 0,
+        'y': -0.08,
         'yanchor': 'top'
     }
 
@@ -101,22 +123,32 @@ def plot(df_left, df_right, audio_feature):
 
     fig = make_subplots(rows=1, cols=2, subplot_titles=('2019', '2020'),
                         specs=[[{'type': 'choropleth'}, {'type': 'choropleth'}]])
+    print("Subplots created.")
 
     # Initial traces
     fig.add_trace(create_choropleth(df_left[df_left['date'] == df_left['date'].min()], audio_feature, color_scale, showscale=True), row=1, col=1)
 
     fig.add_trace(create_choropleth(df_right[df_right['date'] == df_right['date'].min()], audio_feature, color_scale, showscale=True), row=1, col=2)
+    print("Initial traces added.")
 
     frames = create_frames(df_left, df_right, audio_feature, color_scale)
+    print("Frames created.")
 
     fig.frames = frames
 
     slider = create_slider(sorted(set(df_left['date'].unique()) | set(df_right['date'].unique())))
+    print("Slider created.")
     buttons = create_play_pause_buttons()
+    print("Buttons created.")
+    annotations_right = create_annotation(df_right, audio_feature, color_scale, position = -0.15)
+    annotations_left = create_annotation(df_left, audio_feature, color_scale, position = -0.1)
+    annotations_both = annotations_left + annotations_right
+    print("Annotations created.")
 
     fig.update_layout(
         sliders=[slider],
         updatemenus=[buttons],
+        annotations = annotations_both,
         geo=dict(
             showframe=False,
             showcoastlines=False,
@@ -126,6 +158,7 @@ def plot(df_left, df_right, audio_feature):
         width=1900,
         height=850
     )
+    print("Layout updated.")
 
     fig.update_geos(
         showframe=False,
@@ -145,6 +178,7 @@ def plot(df_left, df_right, audio_feature):
 
 
 if __name__ == '__main__':
+    
     data_2019 = {
         'year': 2019,
         'region': ['Germany', 'Denmark', 'Japan', 'France', 'Italy', 'Spain', 'Canada', 'Brazil', 'India', 'Australia',
