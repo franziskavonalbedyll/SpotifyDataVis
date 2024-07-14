@@ -66,7 +66,7 @@ app.layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'fl
                                   marks=slider_marks,
                                   step=1
                               )
-                          ], style={'width': '100%', 'padding': '0px', 'flex': '0 0 auto'})
+                          ], style={'width': '100%', 'padding': '0px', 'flex': '0 1 auto'})
                       ])
 
 
