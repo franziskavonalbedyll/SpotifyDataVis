@@ -56,8 +56,8 @@ app.layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'fl
                           ], style={'width': '100%', 'display': 'flex', 'justifyContent': 'space-between', 'marginBottom': '10px'}),
 
                           html.Div([
-                              dcc.Graph(id='heatmap-1', style={'height': '15vh', 'margin': '0px', 'padding': '0px'}),
-                              dcc.Graph(id='heatmap-2', style={'height': '15vh', 'margin': '0px', 'padding': '0px'}),
+                              dcc.Graph(id='heatmap-1', style={'height': '10vh', 'margin': '0px', 'padding': '0px'}),
+                              dcc.Graph(id='heatmap-2', style={'height': '10vh', 'margin': '0px', 'padding': '0px'}),
                               dcc.Slider(
                                   id='date-slider',
                                   min=0,
@@ -66,7 +66,7 @@ app.layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'fl
                                   marks=slider_marks,
                                   step=1
                               )
-                          ], style={'width': '100%', 'padding': '0px', 'flex': '0 1 auto'})
+                          ], style={'width': '100%', 'padding': '0px', 'flex': '0 0 auto'})
                       ])
 
 
@@ -134,6 +134,11 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
     heatmap_data_1 = heatmap_data_1.groupby('datetime')[selected_audio_feature_1].mean().reset_index()
     heatmap_data_2 = heatmap_data_2.groupby('datetime')[selected_audio_feature_2].mean().reset_index()
 
+    # normalize data for heatmap - Makes it easier to compare the audio features, but "distorts" the actual values
+    heatmap_data_1[selected_audio_feature_1] = (heatmap_data_1[selected_audio_feature_1] - heatmap_data_1[selected_audio_feature_1].min()) / (heatmap_data_1[selected_audio_feature_1].max() - heatmap_data_1[selected_audio_feature_1].min())
+
+    heatmap_data_2[selected_audio_feature_2] = (heatmap_data_2[selected_audio_feature_2] - heatmap_data_2[selected_audio_feature_2].min()) / (heatmap_data_2[selected_audio_feature_2].max() - heatmap_data_2[selected_audio_feature_2].min())
+
     heatmap_fig_1 = go.Figure(data=go.Heatmap(
         z=heatmap_data_1[selected_audio_feature_1],
         x=heatmap_data_1['datetime'],
@@ -144,10 +149,8 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
     ))
     heatmap_fig_1.add_vline(x=heatmap_data_1['datetime'].iloc[selected_date_idx], line_width=3, line_dash="dash", line_color="red")
     heatmap_fig_1.update_layout(
-        xaxis=dict(
-            title='Date',
-        ),
-        yaxis=dict(visible=False)  # Hide y-axis
+        yaxis=dict(visible=False),  # Hide y-axis
+        margin=dict(l=0, r=25, t=0, b=0)  # Remove margins
     )
 
     heatmap_fig_2 = go.Figure(data=go.Heatmap(
@@ -160,10 +163,8 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
     ))
     heatmap_fig_2.add_vline(x=heatmap_data_2['datetime'].iloc[selected_date_idx], line_width=3, line_dash="dash", line_color="red")
     heatmap_fig_2.update_layout(
-        xaxis=dict(
-            title='Date',
-        ),
-        yaxis=dict(visible=False)  # Hide y-axis
+        yaxis=dict(visible=False),  # Hide y-axis
+        margin=dict(l=0, r=25, t=0, b=0)  # Remove margins
     )
 
     return fig1, fig2, heatmap_fig_1, heatmap_fig_2, {'height': '50vh', 'width': '100%', 'display': 'block'}, {'height': '50vh', 'width': '100%', 'display': 'block'}
