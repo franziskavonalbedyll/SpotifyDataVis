@@ -95,14 +95,12 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
                          locationmode='country names', color=selected_audio_feature_1,
                          hover_name="region", title=f"Data for {selected_year_1}-{selected_date}",
                          color_continuous_scale=px.colors.sequential.Viridis,
-                         range_color=(0, 1),
                          hover_data={'date': True, selected_audio_feature_1: True})
 
     fig2 = px.choropleth(filtered_df_2, locations="region",
                          locationmode='country names', color=selected_audio_feature_2,
                          hover_name="region", title=f"Data for {selected_year_2}-{selected_date}",
                          color_continuous_scale=px.colors.sequential.Viridis,
-                         range_color=(0, 1),
                          hover_data={'date': True, selected_audio_feature_2: True})
 
     fig1.update_layout(
@@ -145,7 +143,6 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
         y=[selected_audio_feature_1] * len(heatmap_data_1),  # y-axis to display the audio feature name
         colorscale='Viridis',
         showscale=False,  # Remove colorscale
-        zmin=0, zmax=1
     ))
     heatmap_fig_1.add_vline(x=heatmap_data_1['datetime'].iloc[selected_date_idx], line_width=3, line_dash="dash", line_color="red")
     heatmap_fig_1.update_layout(
@@ -159,7 +156,6 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
         y=[selected_audio_feature_2] * len(heatmap_data_2),  # y-axis to display the audio feature name
         colorscale='Viridis',
         showscale=False,  # Remove colorscale
-        zmin=0, zmax=1
     ))
     heatmap_fig_2.add_vline(x=heatmap_data_2['datetime'].iloc[selected_date_idx], line_width=3, line_dash="dash", line_color="red")
     heatmap_fig_2.update_layout(
