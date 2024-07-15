@@ -1,4 +1,4 @@
-AUDIO_FEATURES_AND_GENRE_PATH = 'data/input_data/data_top200_top5_2019_2020_2021.csv'
+AUDIO_FEATURES_AND_GENRE_PATH = 'data/input_data/data_europe_top200_2019_2020_2021.csv'
 PREPROCCESSED_DATA_DIR = 'data/preprocessed_data'
 CHARTS_PATH = 'data/input_data/charts.csv'
 
