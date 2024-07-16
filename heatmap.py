@@ -8,7 +8,6 @@ from src.config import AUDIO_FEATURES
 # Load and preprocess data
 df = pd.read_csv('data/preprocessed_data/preprocessed_data.csv')[['date', 'region', 'year'] + AUDIO_FEATURES]
 years = df['year'].unique()
-dates = pd.date_range(start='1/1/2019', end='12/31/2019', freq='D').strftime('%m-%d')  # Generate a list of dates from Jan 1 to Dec 31
 
 # Initialize Dash app
 app = dash.Dash(__name__)
@@ -41,12 +40,10 @@ app.layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'fl
 def update_heatmap(selected_year, selected_audio_feature):
     # Filter data for the selected year
     year_data = df[df['year'] == selected_year]
+    year_data['date'] = year_data['year'].astype(str) + "-" + year_data['date']
 
     # Pivot data to have dates as columns and regions as rows
     pivot_table = year_data.pivot_table(index='region', columns='date', values=selected_audio_feature, aggfunc='mean')
-
-    # Reindex to ensure all dates are included
-    pivot_table = pivot_table.reindex(columns=dates, fill_value=0)
 
     # Prepare customdata for hover labels
     customdata = [
