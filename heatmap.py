@@ -8,7 +8,7 @@ from src.config import AUDIO_FEATURES
 # Load and preprocess data
 df = pd.read_csv('data/preprocessed_data/preprocessed_data.csv')[['date', 'region', 'year'] + AUDIO_FEATURES]
 years = df['year'].unique()
-dates = pd.date_range(start='1/1/2019', end='12/31/2019', freq='D').strftime('%m-%d')  # Generate a list of dates from Jan 1 to Dec 31
+#dates = pd.date_range(start='1/1/2019', end='12/31/2019', freq='D').strftime('%m-%d')  # Generate a list of dates from Jan 1 to Dec 31
 countries = df['region'].unique()
 
 covid_df = pd.read_csv('data/input_data/COVID-19_lockdowns_1.csv')
@@ -55,12 +55,9 @@ app.layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'fl
 def update_heatmap(selected_year, selected_audio_feature, selected_covid):
     # Filter data for the selected year
     year_data = df[df['year'] == selected_year]
-
+    year_data['date'] = year_data['year'].astype(str) + "-" + year_data['date']
     # Pivot data to have dates as columns and regions as rows
     pivot_table = year_data.pivot_table(index='region', columns='date', values=selected_audio_feature, aggfunc='mean')
-
-    # Reindex to ensure all dates are included
-    pivot_table = pivot_table.reindex(columns=dates, fill_value=0)
 
     # Prepare customdata for hover labels
     customdata = [
@@ -85,25 +82,8 @@ def update_heatmap(selected_year, selected_audio_feature, selected_covid):
     month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     tickvals = [f"{month:02d}-01" for month in range(1, 13)]
 
-    for country in countries:
-        if country == selected_covid:
-            print(country)
-            lockdowns = covid_df[covid_df['Country / territory'] == country]
-            for _, lockdown in lockdowns.iterrows():
-                down = lockdown['First lockdown']
-                up = lockdown['First lockdown.1']
-                if type(down) == str and type(up) == str:
-                    if down[:4] == str(selected_year):
-                        down = down[5:]
-                        up = up[5:10]
-                        print(down, up)
-                        Date = f"{selected_year}-{down}"
-                        heatmap_fig.add_annotation(x="00-12-17", y=country, text="00-12-17", bordercolor="red", bgcolor="red", arrowcolor="red", showarrow=True, arrowhead=2)
-                        heatmap_fig.add_annotation(x="12-11-16", y=country, text="12-11-16", bordercolor="red", bgcolor="red", arrowcolor="red", showarrow=True, arrowhead=1)
-                        # heatmap_fig.add_bar(x=["2020-03-12", "2020-04-05"], y=[country, country], orientation='h', marker=dict(color='red', opacity=0.5), showlegend=False, width=0.2)
                         
-
-
+    # Update layout
     heatmap_fig.update_layout(
         title=f"Average {selected_audio_feature.capitalize()} per Country in {selected_year}",
         xaxis_title="Date",
@@ -116,20 +96,25 @@ def update_heatmap(selected_year, selected_audio_feature, selected_covid):
         )
 
     )
-
-
-    # for i in range(1, 13):
-        
-    #     heatmap_fig.add_vline(x=f"{i:02d}-01", line_dash="dot", line_color="red", line_width=1)
-
-    # print(covid_df['Country / territory'])
-
-
-                        
-                    
-        
+    addLockdownAnnotations(selected_year, selected_covid, heatmap_fig)
 
     return heatmap_fig
+
+def addLockdownAnnotations(selected_year, selected_covid, heatmap_fig):
+    for country in countries:         
+        lockdowns = covid_df[covid_df['Country / territory'] == country]
+        for _, lockdown in lockdowns.iterrows():
+            down = lockdown['First lockdown']
+            up = lockdown['First lockdown.1']
+            if type(down) == str and type(up) == str:
+                if down[:4] == str(selected_year) or (up[:4] == str(selected_year) and down[:4] != str(selected_year)):
+                    if up[:4] != str(selected_year): up = f"{selected_year}-12-31"
+                    if down[:4] != str(selected_year): down = f"{selected_year}-01-01"
+                    if country == selected_covid:
+                        heatmap_fig.add_annotation(x=down, y=country, text=down, bgcolor="red", arrowcolor="red", showarrow=True, arrowhead=1, opacity=0.9)
+                        heatmap_fig.add_annotation(x=up, y=country, text=up, bgcolor="orange", arrowcolor="orange", showarrow=True, arrowhead=1, opacity=0.9)
+
+                    heatmap_fig.add_trace(go.Scatter(x=[down, up], y=[country, country], mode="lines", line=dict(color="red", width=1.5), showlegend=False, opacity=0.8))
 
 if __name__ == '__main__':
     app.run_server(debug=True)
