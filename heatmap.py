@@ -101,20 +101,24 @@ def update_heatmap(selected_year, selected_audio_feature, selected_covid):
     return heatmap_fig
 
 def addLockdownAnnotations(selected_year, selected_covid, heatmap_fig):
+
     for country in countries:         
         lockdowns = covid_df[covid_df['Country / territory'] == country]
         for _, lockdown in lockdowns.iterrows():
-            down = lockdown['First lockdown']
-            up = lockdown['First lockdown.1']
-            if type(down) == str and type(up) == str:
-                if down[:4] == str(selected_year) or (up[:4] == str(selected_year) and down[:4] != str(selected_year)):
-                    if up[:4] != str(selected_year): up = f"{selected_year}-12-31"
-                    if down[:4] != str(selected_year): down = f"{selected_year}-01-01"
-                    if country == selected_covid:
-                        heatmap_fig.add_annotation(x=down, y=country, text=down, bgcolor="red", arrowcolor="red", showarrow=True, arrowhead=1, opacity=0.9)
-                        heatmap_fig.add_annotation(x=up, y=country, text=up, bgcolor="orange", arrowcolor="orange", showarrow=True, arrowhead=1, opacity=0.9)
+            for i in range(2, 25, 3):
+                down = lockdown.iloc[i]
+                up = lockdown.iloc[i+1]
+                if type(down) == str and type(up) == str:
+                    if down[:4] == str(selected_year) or (up[:4] == str(selected_year) and down[:4] != str(selected_year)):
+                        up_label = up
+                        down_label = down
+                        if up[:4] != str(selected_year): up = f"{selected_year}-12-31"
+                        if down[:4] != str(selected_year): down = f"{selected_year}-01-01"
+                        if country == selected_covid:
+                            heatmap_fig.add_annotation(x=down, y=country, text=down_label, bgcolor="red", arrowcolor="red", showarrow=True, arrowhead=1, opacity=0.9)
+                            heatmap_fig.add_annotation(x=up, y=country, text=up_label, bgcolor="orange", arrowcolor="orange", showarrow=True, arrowhead=1, opacity=0.9)
 
-                    heatmap_fig.add_trace(go.Scatter(x=[down, up], y=[country, country], mode="lines", line=dict(color="red", width=1.5), showlegend=False, opacity=0.8))
+                        heatmap_fig.add_trace(go.Scatter(x=[down, up], y=[country, country], mode="lines", line=dict(color="red", width=1.5), showlegend=False, opacity=0.8))
 
 if __name__ == '__main__':
     app.run_server(debug=True)
