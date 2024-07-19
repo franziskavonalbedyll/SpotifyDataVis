@@ -8,6 +8,7 @@ PROCESSED_DATA_PATH = 'data/preprocessed_data/processed_data.csv'
 PRE_COVID_YEARS = [2017, 2018, 2019]
 AUDIO_FEATURES = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo', 'duration_ms']
 DEVIATIONS_COLUMNS = [f"{audio_feature}_deviation" for audio_feature in AUDIO_FEATURES]
+STD_DEVIATION_COLUMNS = [f"{audio_feature}_std_deviation" for audio_feature in AUDIO_FEATURES]
 european_countries = ['Andorra', 'Austria',
                       'Belgium', 'Bulgaria',
                       'Czech Republic', 'Denmark',

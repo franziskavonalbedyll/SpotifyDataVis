@@ -1,9 +1,9 @@
 import pandas as pd
 from src.config import *
 
-df = pd.read_csv(PROCESSED_DATA_PATH)[['date', 'region', 'year'] + DEVIATIONS_COLUMNS]
+df = pd.read_csv(PROCESSED_DATA_PATH)[['date', 'region', 'year'] + STD_DEVIATION_COLUMNS]
 df = df[df['region'] != 'Andorra']
-df = df.rename(columns={audio_feature_deviation: audio_feature for (audio_feature_deviation, audio_feature) in zip(DEVIATIONS_COLUMNS, AUDIO_FEATURES)})
+df = df.rename(columns={audio_feature_std_deviation: audio_feature for (audio_feature_std_deviation, audio_feature) in zip(STD_DEVIATION_COLUMNS, AUDIO_FEATURES)})
 years = df['year'].unique()
 countries = df['region'].unique()
 
@@ -24,8 +24,8 @@ def calculate_y_bounds(df):
         for country in df['region'].unique():
             country_data = df[df['region'] == country]
             if not country_data.empty and feature in country_data.columns:
-                ymin = country_data[feature].min()
-                ymax = country_data[feature].max()
+                ymin = country_data[feature].min() - 0.2
+                ymax = country_data[feature].max() + 0.2
                 bounds[(feature, country)] = (ymin, ymax)
             else:
                 bounds[(feature, country)] = (0, 0)

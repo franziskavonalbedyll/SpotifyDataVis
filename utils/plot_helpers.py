@@ -118,7 +118,7 @@ def create_line_charts(selected_region, selected_audio_feature):
         fig.update_layout(
             title=f'{selected_audio_feature.capitalize()} Deviations in {selected_region} for {year}',
             xaxis_title='Date',
-            yaxis_title='Deviation',
+            yaxis_title='Standard Deviation',
             yaxis=dict(range=[ymin, ymax])  # Set y-axis range
         )
 

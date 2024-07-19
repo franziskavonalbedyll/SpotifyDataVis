@@ -33,7 +33,7 @@ layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'flex',
                       dcc.Graph(id='heatmap', style={'height': '80vh', 'width': '100%'}),
                       dbc.Modal(
                           [
-                              dbc.ModalHeader(dbc.ModalTitle("Country Audio Feature Deviations")),
+                              dbc.ModalHeader(dbc.ModalTitle("Country Audio Feature Standard Deviations")),
                               dbc.ModalBody(id='modal-body'),
                               dbc.ModalFooter(
                                   dbc.Button("Close", id="close", className="ms-auto", n_clicks=0)
