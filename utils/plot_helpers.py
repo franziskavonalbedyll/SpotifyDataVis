@@ -13,18 +13,18 @@ def update_heatmap(selected_audio_feature, selected_covid, sort):
     print(selected_audio_feature, sort)
     selected_year = 2020
 
-    # Filter data for the selected year
+    # Filter data_processing for the selected year
     year_data = df[df['year'] == selected_year]
     year_data['date'] = year_data['year'].astype(str) + "-" + year_data['date']
 
-    # Pivot data to have dates as columns and regions as rows
+    # Pivot data_processing to have dates as columns and regions as rows
     pivot_table = year_data.pivot_table(index='region', columns='date', values=selected_audio_feature, aggfunc='mean')
 
     # Fill NaN values with the column mean
     pivot_table = pivot_table.apply(lambda x: x.fillna(x.mean()), axis=0)
 
     if sort:
-        # Use seaborn's clustermap to get the sorted data with custom parameters
+        # Use seaborn's clustermap to get the sorted data_processing with custom parameters
         clustermap = sns.clustermap(pivot_table, method='ward', metric='euclidean', cmap='RdBu', col_cluster=False)
         sorted_data = clustermap.data2d
     else:

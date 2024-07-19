@@ -4,9 +4,9 @@ from utils.plot_helpers import update_heatmap, toggle_modal
 
 def register_callbacks(app):
     @app.callback(
-        Output('sort-state', 'data'),
+        Output('sort-state', 'data_processing'),
         [Input('sort-button', 'n_clicks')],
-        [State('sort-state', 'data')]
+        [State('sort-state', 'data_processing')]
     )
     def update_sort_state(n_clicks, sort_state):
         if n_clicks:
@@ -17,7 +17,7 @@ def register_callbacks(app):
         Output('heatmap', 'figure'),
         [Input('audio-feature-dropdown', 'value'),
          Input('covid-dropdown', 'value'),
-         Input('sort-state', 'data')]
+         Input('sort-state', 'data_processing')]
     )
     def update_heatmap_callback(selected_audio_feature, selected_covid, sort_state):
         sort = sort_state['sorted']
@@ -35,7 +35,7 @@ def register_callbacks(app):
 
     @app.callback(
         Output('sort-button', 'children'),
-        [Input('sort-state', 'data')]
+        [Input('sort-state', 'data_processing')]
     )
     def update_button_label(sort_state):
         if sort_state['sorted']:

@@ -6,8 +6,8 @@ import pandas as pd
 
 from src.config import AUDIO_FEATURES
 
-# Load and preprocess data
-df = pd.read_csv('data/preprocessed_data/preprocessed_data.csv')[['date', 'region', 'year'] + AUDIO_FEATURES]
+# Load and preprocess data_processing
+df = pd.read_csv('data_processing/preprocessed_data/preprocessed_data.csv')[['date', 'region', 'year'] + AUDIO_FEATURES]
 years = df['year'].unique()
 dates = df['date'].unique()
 
@@ -85,7 +85,7 @@ app.layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'fl
 def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, selected_audio_feature_2, selected_date_idx):
     selected_date = dates[selected_date_idx]
 
-    # Filter data for the selected years
+    # Filter data_processing for the selected years
     year_data_1 = df[df['year'] == selected_year_1]
     year_data_2 = df[df['year'] == selected_year_2]
 
@@ -102,7 +102,7 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
         color_scale_1 = px.colors.sequential.Viridis
         color_scale_2 = px.colors.sequential.Cividis
 
-    # Filter data for the selected dates
+    # Filter data_processing for the selected dates
     filtered_df_1 = year_data_1[year_data_1['date'] == selected_date]
     filtered_df_2 = year_data_2[year_data_2['date'] == selected_date]
 
@@ -140,7 +140,7 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
         margin=dict(l=0, r=0, t=30, b=0),
     )
 
-    # Prepare data for heatmaps
+    # Prepare data_processing for heatmaps
     heatmap_data_1 = year_data_1.copy()
     heatmap_data_2 = year_data_2.copy()
 
@@ -150,7 +150,7 @@ def update_maps(selected_year_1, selected_audio_feature_1, selected_year_2, sele
     heatmap_data_1 = heatmap_data_1.groupby('datetime')[selected_audio_feature_1].mean().reset_index()
     heatmap_data_2 = heatmap_data_2.groupby('datetime')[selected_audio_feature_2].mean().reset_index()
 
-    # Normalize data for heatmap
+    # Normalize data_processing for heatmap
     heatmap_data_1[selected_audio_feature_1] = (heatmap_data_1[selected_audio_feature_1] - heatmap_data_1[selected_audio_feature_1].min()) / (heatmap_data_1[selected_audio_feature_1].max() - heatmap_data_1[selected_audio_feature_1].min())
     heatmap_data_2[selected_audio_feature_2] = (heatmap_data_2[selected_audio_feature_2] - heatmap_data_2[selected_audio_feature_2].min()) / (heatmap_data_2[selected_audio_feature_2].max() - heatmap_data_2[selected_audio_feature_2].min())
 

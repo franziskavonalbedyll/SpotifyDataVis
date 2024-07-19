@@ -7,7 +7,7 @@ df = df.rename(columns={audio_feature_deviation: audio_feature for (audio_featur
 years = df['year'].unique()
 countries = df['region'].unique()
 
-covid_df = pd.read_csv('data/input_data/COVID-19_lockdowns_1.csv')
+covid_df = pd.read_csv('data_processing/input_data/COVID-19_lockdowns_1.csv')
 
 def get_countries():
     return countries
