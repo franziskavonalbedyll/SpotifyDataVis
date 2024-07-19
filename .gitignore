@@ -3,3 +3,4 @@ logs
 poetry.lock
 data
 __pycache__/
+.DS_Store

@@ -1,7 +1,6 @@
 import pandas as pd
 import os
 
-from src.config import *
 from src.utils import *
 
 
@@ -21,16 +20,14 @@ def _keep_european_countries(df):
                           'Lithuania', 'Luxembourg',
                           'Netherlands', 'Norway',
                           'Poland', 'Portugal',
-                          'Romania', 'Russia',
-                          'Slovakia', 'Spain',
-                          'Sweden', 'Switzerland',
-                          'Turkey', 'Ukraine',
+                          'Romania', 'Slovakia',
+                          'Spain', 'Sweden',
+                          'Switzerland', 'Turkey',
                           'United Kingdom']
 
     df = df[df['region'].isin(european_countries)]
 
     return df
-
 
 
 def _merge_charts_with_audio_features(audio_features: pd.DataFrame, charts: pd.DataFrame, years_to_keep) -> None:
@@ -66,14 +63,16 @@ def preprocess_data(include_years: int):
 
         # Remove preprocessing steps by commenting them out
         preprocessed_charts = _keep_european_countries(charts)
+        preprocessed_charts = preprocessed_charts[preprocessed_charts['date'] != '2020-02-29']
         preprocessed_df = _merge_charts_with_audio_features(input_data, preprocessed_charts, include_years)
         preprocessed_df = _transform_dates(preprocessed_df)
         preprocessed_df = _aggregate_audio_feature(preprocessed_df)
         preprocessed_df = _round_audio_features(preprocessed_df)
 
+
         preprocessed_df.to_csv(output_path)
 
 
 if __name__ == '__main__':
-    include_years = [2019, 2020, 2021]
+    include_years = [2017, 2018, 2019, 2020]
     preprocess_data(include_years)
