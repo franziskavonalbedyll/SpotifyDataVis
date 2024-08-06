@@ -45,24 +45,38 @@ def update_heatmap(selected_audio_feature, selected_covid, sort):
         showscale=True,
         customdata=customdata,
         hovertemplate="%{customdata}<extra></extra>",
+        colorbar=dict(
+            title=dict(
+                text="Std. Dev.",
+                side="top",
+                font=dict(size=17)
+            ),
+            tickfont=dict(size=15)  # Increase font size of colorbar numbers
+        )
     ))
 
     # Update layout
     heatmap_fig.update_layout(
-        xaxis_title="Date",
-        yaxis_title="Country",
-        yaxis=dict(autorange='reversed'),  # Reverse the y-axis to have the countries in alphabetical order from top to bottom
+        # xaxis_title="Date",
+        # yaxis_title="Country",
+        yaxis=dict(
+            autorange='reversed',  # Reverse the y-axis to have the countries in alphabetical order from top to bottom
+            title_standoff=10,  # Add space between the y label and the axis
+            tickfont=dict(size=15)  # Change font size of y-axis ticks
+        ),
         xaxis=dict(
             tickmode='linear',
             ticks='outside',
             dtick='M1',
-        ), font = dict(size=11)
+            tickfont=dict(size=15)  # Change font size of x-axis ticks
+        ),
+        font=dict(size=11),
+        margin=dict(l=0, r=0, t=20, b=20)  # Remove margins
     )
-    #
+
     addLockdownAnnotations(selected_year, selected_covid, heatmap_fig)
 
     return heatmap_fig
-
 
 def addLockdownAnnotations(selected_year, selected_covid, heatmap_fig):
     for country in countries:
@@ -96,6 +110,7 @@ def addLockdownAnnotations(selected_year, selected_covid, heatmap_fig):
                                 y1=country,
                                 line=dict(color="white", width=5)
                             )
+
 def create_line_charts(selected_region, selected_audio_feature):
     filtered_df = df[df['region'] == selected_region]
 

@@ -1,7 +1,6 @@
 from dash import Input, Output, State
 from utils.plot_helpers import update_heatmap, toggle_modal
 
-
 def register_callbacks(app):
     @app.callback(
         Output('sort-state', 'data'),
