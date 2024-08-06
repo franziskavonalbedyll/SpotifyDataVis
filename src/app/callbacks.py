@@ -17,12 +17,11 @@ def register_callbacks(app):
         Output('heatmap', 'figure'),
         [Input('audio-feature-dropdown', 'value'),
          Input('covid-dropdown', 'value'),
-         Input('covid-showall', 'value'),
          Input('sort-state', 'data')]
     )
-    def update_heatmap_callback(selected_audio_feature, selected_covid, showall, sort_state):
+    def update_heatmap_callback(selected_audio_feature, selected_covid, sort_state):
         sort = sort_state['sorted']
-        return update_heatmap(selected_audio_feature, selected_covid, showall, sort)
+        return update_heatmap(selected_audio_feature, selected_covid, sort)
 
     @app.callback(
         Output("modal", "is_open"),
