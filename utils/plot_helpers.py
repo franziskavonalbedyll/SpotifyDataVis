@@ -84,7 +84,7 @@ def addLockdownAnnotations(selected_year, selected_covid, showall, heatmap_fig):
                         if country == selected_covid or showall:
                         #     heatmap_fig.add_annotation(x=down, y=country, text=down_label, bgcolor="red", arrowcolor="red", showarrow=True, arrowhead=1, opacity=0.9)
                         #     heatmap_fig.add_annotation(x=up, y=country, text=up_label, bgcolor="orange", arrowcolor="orange", showarrow=True, arrowhead=1, opacity=0.9)
-                            heatmap_fig.add_trace(go.Scatter(x=[down, up], y=[country, country], mode="lines", line=dict(color="yellow", width=0.8), showlegend=False, opacity=1))
+                            heatmap_fig.add_trace(go.Scatter(x=[down, up], y=[country, country], mode="lines", line=dict(color="black", width=2), showlegend=False))
 
 def create_line_charts(selected_region, selected_audio_feature):
     filtered_df = df[df['region'] == selected_region]
