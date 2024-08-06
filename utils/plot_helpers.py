@@ -49,7 +49,6 @@ def update_heatmap(selected_audio_feature, selected_covid, sort):
 
     # Update layout
     heatmap_fig.update_layout(
-        title=f"Average {selected_audio_feature.capitalize()} per Country in {selected_year}",
         xaxis_title="Date",
         yaxis_title="Country",
         yaxis=dict(autorange='reversed'),  # Reverse the y-axis to have the countries in alphabetical order from top to bottom
@@ -63,6 +62,7 @@ def update_heatmap(selected_audio_feature, selected_covid, sort):
     addLockdownAnnotations(selected_year, selected_covid, heatmap_fig)
 
     return heatmap_fig
+
 
 def addLockdownAnnotations(selected_year, selected_covid, heatmap_fig):
     for country in countries:
@@ -78,10 +78,24 @@ def addLockdownAnnotations(selected_year, selected_covid, heatmap_fig):
                         if up[:4] != str(selected_year): up = f"{selected_year}-12-31"
                         if down[:4] != str(selected_year): down = f"{selected_year}-01-01"
                         if country == selected_covid or selected_covid == "All":
-                        #     heatmap_fig.add_annotation(x=down, y=country, text=down_label, bgcolor="red", arrowcolor="red", showarrow=True, arrowhead=1, opacity=0.9)
-                        #     heatmap_fig.add_annotation(x=up, y=country, text=up_label, bgcolor="orange", arrowcolor="orange", showarrow=True, arrowhead=1, opacity=0.9)
-                            heatmap_fig.add_trace(go.Scatter(x=[down, up], y=[country, country], mode="lines", line=dict(color="black", width=2), showlegend=False))
-
+                            # Add black line
+                            heatmap_fig.add_shape(
+                                type="line",
+                                x0=down,
+                                y0=country,
+                                x1=up,
+                                y1=country,
+                                line=dict(color="black", width=10)
+                            )
+                            # Add white line for border effect
+                            heatmap_fig.add_shape(
+                                type="line",
+                                x0=down,
+                                y0=country,
+                                x1=up,
+                                y1=country,
+                                line=dict(color="white", width=5)
+                            )
 def create_line_charts(selected_region, selected_audio_feature):
     filtered_df = df[df['region'] == selected_region]
 
