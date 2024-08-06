@@ -2,11 +2,12 @@ import seaborn as sns
 import pandas as pd
 import plotly.graph_objs as go
 from dash import dcc, html
-from utils.data_loader import get_data, get_covid_data, AUDIO_FEATURES, y_bounds
+from utils.data_loader import get_data, get_covid_data, AUDIO_FEATURES, y_bounds, get_top3_songs_data
 
 df = get_data()
 covid_df = get_covid_data()
 countries = df['region'].unique()
+top3_songs_df = get_top3_songs_data()
 
 def update_heatmap(selected_audio_feature, selected_covid, showall, sort):
     print("Update heatmap called.")
@@ -31,8 +32,7 @@ def update_heatmap(selected_audio_feature, selected_covid, showall, sort):
         sorted_data = pivot_table.sort_index()
 
     customdata = [
-        [f"Country: {country}<br>Date: {date}<br>{selected_audio_feature.capitalize()}: {value:.2f}"
-         for date, value in zip(sorted_data.columns, row)]
+        [f"Country: {country}<br>Date: {date}<br>{selected_audio_feature.capitalize()}: {value:.2f} <br>Top 3 Songs:<br>" + str(top3_songs_df.at[country, date]) for date, value in zip(sorted_data.columns, row)]
         for country, row in zip(sorted_data.index, sorted_data.values)
     ]
 

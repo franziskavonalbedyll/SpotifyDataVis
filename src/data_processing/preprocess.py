@@ -72,7 +72,23 @@ def preprocess_data(include_years: int):
 
         preprocessed_df.to_csv(output_path)
 
+def make_top3(include_years: int):
+    output_path = 'data_processing/preprocessed_data/top3.csv'
+    if not os.path.exists(output_path):
+        input_data = pd.read_csv(AUDIO_FEATURES_AND_GENRE_PATH)
+        charts = pd.read_csv(CHARTS_PATH)
+
+        # Remove preprocessing steps by commenting them out
+        preprocessed_charts = _keep_european_countries(charts)
+        preprocessed_charts = preprocessed_charts[preprocessed_charts['date'] != '2020-02-29']
+        preprocessed_df = _merge_charts_with_audio_features(input_data, preprocessed_charts, include_years)
+        preprocessed_df = _transform_dates(preprocessed_df)
+
+        print(preprocessed_df.head())
+
+        # preprocessed_df.to_csv(output_path)
 
 if __name__ == '__main__':
     include_years = [2017, 2018, 2019, 2020]
-    preprocess_data(include_years)
+    # preprocess_data(include_years)
+    make_top3(include_years)
