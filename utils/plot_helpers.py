@@ -8,7 +8,7 @@ df = get_data()
 covid_df = get_covid_data()
 countries = df['region'].unique()
 
-def update_heatmap(selected_audio_feature, selected_covid, sort):
+def update_heatmap(selected_audio_feature, selected_covid, showall, sort):
     print("Update heatmap called.")
     print(selected_audio_feature, sort)
     selected_year = 2020
@@ -64,11 +64,11 @@ def update_heatmap(selected_audio_feature, selected_covid, sort):
         )
     )
     #
-    addLockdownAnnotations(selected_year, selected_covid, heatmap_fig)
+    addLockdownAnnotations(selected_year, selected_covid, showall, heatmap_fig)
 
     return heatmap_fig
 
-def addLockdownAnnotations(selected_year, selected_covid, heatmap_fig):
+def addLockdownAnnotations(selected_year, selected_covid, showall, heatmap_fig):
     for country in countries:
         lockdowns = covid_df[covid_df['Country / territory'] == country]
         for _, lockdown in lockdowns.iterrows():
@@ -81,11 +81,10 @@ def addLockdownAnnotations(selected_year, selected_covid, heatmap_fig):
                         down_label = down
                         if up[:4] != str(selected_year): up = f"{selected_year}-12-31"
                         if down[:4] != str(selected_year): down = f"{selected_year}-01-01"
-                        if country == selected_covid:
-                            heatmap_fig.add_annotation(x=down, y=country, text=down_label, bgcolor="red", arrowcolor="red", showarrow=True, arrowhead=1, opacity=0.9)
-                            heatmap_fig.add_annotation(x=up, y=country, text=up_label, bgcolor="orange", arrowcolor="orange", showarrow=True, arrowhead=1, opacity=0.9)
-
-                        heatmap_fig.add_trace(go.Scatter(x=[down, up], y=[country, country], mode="lines", line=dict(color="red", width=1.5), showlegend=False, opacity=0.8))
+                        if country == selected_covid or showall:
+                        #     heatmap_fig.add_annotation(x=down, y=country, text=down_label, bgcolor="red", arrowcolor="red", showarrow=True, arrowhead=1, opacity=0.9)
+                        #     heatmap_fig.add_annotation(x=up, y=country, text=up_label, bgcolor="orange", arrowcolor="orange", showarrow=True, arrowhead=1, opacity=0.9)
+                            heatmap_fig.add_trace(go.Scatter(x=[down, up], y=[country, country], mode="lines", line=dict(color="yellow", width=0.8), showlegend=False, opacity=1))
 
 def create_line_charts(selected_region, selected_audio_feature):
     filtered_df = df[df['region'] == selected_region]

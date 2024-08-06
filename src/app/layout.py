@@ -21,7 +21,7 @@ layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'flex',
                               id='covid-dropdown',
                               options=[{'label': country, 'value': country} for country in countries],
                               value='Denmark',
-                              style={'width': '45%', 'display': 'inline-block'}
+                              style={'width': '45%', 'display': 'inline-block', 'marginLeft': '10px'}
                           ),
                           dbc.Button(
                               id='sort-button',
@@ -29,6 +29,13 @@ layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'flex',
                               style={'float': 'right', 'marginRight': '10px', 'fontSize': '16px'}
                           ),
                           dcc.Store(id='sort-state', data={'sorted': False})
+                      ], style={'width': '100%', 'padding': '20px', 'boxSizing': 'border-box'}),
+                      html.Div([
+                          dcc.Checklist(
+                              id='covid-showall',
+                              options=[{'label': 'Show lockdown for all countries', 'value': 'showall'}],
+                              style={'width': '45%', 'display': 'inline-block', 'marginLeft': '20px'}
+                          )
                       ], style={'width': '100%', 'padding': '20px', 'boxSizing': 'border-box'}),
                       dcc.Graph(id='heatmap', style={'height': '80vh', 'width': '100%'}),
                       dbc.Modal(
