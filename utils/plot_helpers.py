@@ -62,7 +62,7 @@ def update_heatmap(selected_audio_feature, selected_covid, sort):
         yaxis=dict(
             autorange='reversed',  # Reverse the y-axis to have the countries in alphabetical order from top to bottom
             title_standoff=10,  # Add space between the y label and the axis
-            tickfont=dict(size=15)  # Change font size of y-axis ticks
+            tickfont=dict(size=15),  # Change font size of y-axis ticks
         ),
         xaxis=dict(
             tickmode='linear',

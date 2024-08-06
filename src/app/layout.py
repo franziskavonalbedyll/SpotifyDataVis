@@ -12,19 +12,23 @@ layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'flex',
                                style={'textAlign': 'center', 'fontSize': 28, 'flex': '0 1 auto'}),
                       html.Div([
                           html.Div([
+                              html.Div("Select Audio Feature", style={'marginBottom': '5px', 'fontWeight': 'bold'}),
                               dcc.Dropdown(
                                   id='audio-feature-dropdown',
                                   options=[{'label': feature.capitalize(), 'value': feature} for feature in AUDIO_FEATURES],
                                   value='valence',
                                   style={'width': '100%', 'display': 'inline-block'}
                               ),
+                          ], style={'width': '30%', 'display': 'inline-block', 'paddingRight': '10px'}),
+                          html.Div([
+                              html.Div("Select Country for Lockdown Dates", style={'marginBottom': '5px', 'fontWeight': 'bold'}),
                               dcc.Dropdown(
                                   id='covid-dropdown',
                                   options=[{'label': country, 'value': country} for country in countries],
                                   value='Denmark',
-                                  style={'width': '100%', 'display': 'inline-block', 'marginLeft': '10px'}
-                              )
-                          ], style={'width': '50%', 'display': 'flex', 'flexWrap': 'nowrap'}),
+                                  style={'width': '100%', 'display': 'inline-block'}
+                              ),
+                          ], style={'width': '30%', 'display': 'inline-block', 'paddingLeft': '10px'}),
                           dcc.Store(id='sort-state', data={'sorted': False})
                       ], style={'width': '75%', 'boxSizing': 'border-box',
                                 'paddingTop': '25px',
