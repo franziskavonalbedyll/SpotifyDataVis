@@ -2,7 +2,9 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 from utils.data_loader import get_countries, AUDIO_FEATURES
 
-countries = get_countries()
+countries = get_countries() 
+countries = countries.tolist()
+countries.insert(0,'All')
 
 layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'flex', 'flexDirection': 'column'},
                   children=[
@@ -15,21 +17,24 @@ layout = html.Div(style={'height': '100vh', 'width': '100vw', 'display': 'flex',
                               value='valence',
                               style={'width': '45%', 'display': 'inline-block', 'marginLeft': '10px'}
                           ),
-                      ], style={'width': '100%', 'padding': '20px', 'boxSizing': 'border-box'}),
-                      html.Div([
                           dcc.Dropdown(
                               id='covid-dropdown',
                               options=[{'label': country, 'value': country} for country in countries],
                               value='Denmark',
-                              style={'width': '45%', 'display': 'inline-block'}
+                              style={'width': '45%', 'display': 'inline-block', 'marginLeft': '10px'}
                           ),
                           dbc.Button(
                               id='sort-button',
                               children='Sort by Similarity',
-                              style={'float': 'right', 'marginRight': '10px', 'fontSize': '16px'}
+                              style={'float': 'right', 'fontSize': '16px'}
                           ),
                           dcc.Store(id='sort-state', data={'sorted': False})
-                      ], style={'width': '100%', 'padding': '20px', 'boxSizing': 'border-box'}),
+                      ], style={'width': '100%', 'boxSizing': 'border-box', 
+                                'padding-top': '25px', 
+                                'padding-right': '25px',
+                                'padding-left': '25px',
+                                'padding-bottom': '0px',
+                                'margin-bottom': '0px'}),
                       dcc.Graph(id='heatmap', style={'height': '80vh', 'width': '100%'}),
                       dbc.Modal(
                           [

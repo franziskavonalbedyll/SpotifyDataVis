@@ -9,6 +9,11 @@ countries = df['region'].unique()
 
 covid_df = pd.read_csv('data/input_data/COVID-19_lockdowns_1.csv')
 
+top3_songs_df = pd.read_csv('data/preprocessed_data/pivot_top3_songs.csv', index_col=0)
+
+def get_top3_songs_data():
+    return top3_songs_df
+
 def get_countries():
     return countries
 
