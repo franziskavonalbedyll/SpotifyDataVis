@@ -8,6 +8,34 @@ df = get_data()
 covid_df = get_covid_data()
 countries = df['region'].unique()
 top3_songs_df = get_top3_songs_data()
+colors_fewer = [
+    'rgb(66, 167, 198)',
+    'rgb(96, 188, 233)',
+    'rgb(157, 204, 239)',
+    'rgb(198, 219, 237)',
+    'rgb(222, 230, 231)',
+    'rgb(236, 234, 218)',
+    'rgb(240, 230, 178)',
+    'rgb(249, 213, 118)',
+    'rgb(255, 185, 84)',
+    'rgb(253, 154, 68)',
+    'rgb(245, 118, 52)'
+]
+
+"""
+hex colors
+42A7C6
+60BCE9
+9DCCEF
+C6DBED
+DEE6E7
+ECEADA
+F0E6B2
+F9D576
+FFB954
+FD9A44
+F57634
+"""
 
 def update_heatmap(selected_audio_feature, selected_covid, sort):
     print("Update heatmap called.")
@@ -41,7 +69,7 @@ def update_heatmap(selected_audio_feature, selected_covid, sort):
         z=sorted_data.values,
         x=sorted_data.columns,
         y=sorted_data.index,
-        colorscale='RdBu',
+        colorscale=colors_fewer,
         showscale=True,
         customdata=customdata,
         hovertemplate="%{customdata}<extra></extra>",
