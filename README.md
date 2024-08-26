@@ -1,6 +1,6 @@
 # Impact of Covid-19 on Spotify Audio Feature Trends in Europe 
 
-![Preview of the overview visualization](docs/preview.jpeg)
+![Preview of the overview visualization](docs/preview.jpg)
 
 ## Overview
 
